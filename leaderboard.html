@@ -173,7 +173,17 @@ anim();setInterval(burstLocal,3000);
 function createSparkles(){const c=document.getElementById('sparkles');for(let i=0;i<30;i++){const s=document.createElement('div');s.className='spark';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';const sz=3+Math.random()*7;s.style.width=sz+'px';s.style.height=sz+'px';s.style.background=(Math.random()>.45)?'#FFD700':'#fff';s.style.animationDelay=(Math.random()*3)+'s';c.appendChild(s);}}
 createSparkles();
 
-function fmt(ts){if(!ts)return'—';return new Date(ts).toLocaleString([], {dateStyle:'medium',timeStyle:'short'});}
+function fmt(ts) {
+  if (!ts) return '—';
+  const numTs = Number(ts);
+  const d = isNaN(numTs) ? new Date(ts) : new Date(numTs);
+  // Always display in Nigerian local time (WAT / Africa_Lagos)
+  return d.toLocaleString('en-NG', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+    timeZone: 'Africa/Lagos'
+  });
+}
 function updLU(){const e=document.getElementById('lastUpdated');if(e)e.textContent='Last updated: '+(new Date()).toLocaleString();}
 async function load(){
   let s = [];
@@ -220,4 +230,5 @@ setInterval(load,15000);
 </script>
 </body>
 </html>
+
 
