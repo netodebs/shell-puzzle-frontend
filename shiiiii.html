@@ -475,6 +475,24 @@ showMessage('Submitting score...', 2000);
   } else {
     showMessage(`🎉 ${currentPlayer.first}! Solved in ${finalTime.toFixed(2)}s (${moves} moves). Not in Top 10.`, 2500);
   }
+  // 🔥 Send score to backend API
+try {
+  fetch('https://shell-puzzle-api.onrender.com/score', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      id: nameId,
+      time: finalTime,
+      moves: moves,
+      institution: currentPlayer.institution,
+      ts: Date.now()
+    })
+  }).then(res => res.json())
+    .then(data => console.log('✅ Score sent to API:', data))
+    .catch(err => console.error('❌ Error sending score:', err));
+} catch (err) {
+  console.error('❌ API send failed:', err);
+}
   setTimeout(()=>resetForNextPlayer(), 2600);
 }
 
@@ -543,3 +561,4 @@ window.addEventListener('resize', ()=>{ confettiCanvas.width = innerWidth; confe
 </body>
 
 </html>
+
